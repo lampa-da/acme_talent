@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { modifyClient } from './store';
 
+// move client to props
+// move dom state to react state...
+
 
 class ClientProfile extends Component {
-
+    
     render() {
-        console.log(this.props)
-
         const { modifyClient, client } = this.props;
         const allPossibleSkills = this.props.skills;
 
@@ -67,10 +68,18 @@ class ClientProfile extends Component {
     }
 }
 
+const mapStateToProps = (state, otherProps) => {
+    const clientId = otherProps.match.params.id * 1;
+    return {
+        ...state,
+        client: state.clients.find(client => client.id === clientId)
+    }
+}
+
 const mapDispatchToProps = (dispatch) => {
     return {
         modifyClient: ({addRemove, clientId, skillId}) => dispatch(modifyClient({addRemove, clientId, skillId})),
     }
 }
 
-export default connect(state => state, mapDispatchToProps)(ClientProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(ClientProfile);
