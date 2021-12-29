@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 
 const Skills = (props) => {
     const { skills } = props;
+    skills.sort((a, b) => (b.clients.length - a.clients.length));
 
     return(
-        <div>Skills
+        <div>
+            <h3>Skills</h3>
             <ul className='skills'>
                 { skills.map(({ id, name, clients }) => 
                     <li key={ id }>

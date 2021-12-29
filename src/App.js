@@ -19,7 +19,7 @@ class App extends Component {
     render() {
         return(
             <Router>
-                <h1>Lotsah Talent Agency</h1>
+                <h1>Acme Talent Agency</h1>
                 <div id='app'>
                     <Switch>
                         <Route path='/clients/:id' component={ ClientProfile }/>
