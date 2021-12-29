@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const Skills = (props) => {
-    console.log(props);
     const { skills } = props;
 
     return(

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import Clients from './Clients';
 import Skills from './Skills';
 import ClientProfile from './ClientProfile';
@@ -8,7 +7,7 @@ import SkillProfile from './SkillProfile';
 import { connect } from 'react-redux';
 import { loadClients, loadSkills } from './store';
 
-import { HashRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 
 class App extends Component {
 

@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import axios from 'axios';
-import logger from 'redux-logger';
+import { createLogger } from 'redux-logger';
 
 const clientsReducer = (state = [], action) => {
     if(action.type === 'LOAD_CLIENTS') {
@@ -11,6 +11,14 @@ const clientsReducer = (state = [], action) => {
         const client = action.clients.find(client => client);
         const existingClients = state.filter(existingClient => existingClient.id !== client.id)
         state = [...existingClients, client];
+    }
+    else if (action.type === 'RENAME_SKILL') {
+        const clients = [...state];
+        clients.forEach(client => {
+            client.skills.forEach(skill => {
+                if(skill.id === action.skillId) skill.name = action.name;
+            });
+        })
     }
     return state;
 }
@@ -43,7 +51,7 @@ const clientReducer = (state = {}, action) => {
 const reducer = combineReducers({
     clients: clientsReducer,
     skills: skillsReducer,
-    client: clientReducer
+    client: clientReducer,
 });
 
 const _loadSkills = (skills) => {
@@ -119,8 +127,16 @@ const _updateClient = (client) => {
     }
 }
 
+export const renameSkill = ({ skillId, name, history }) => {
+    return async (dispatch) => {
+        const skill = (await axios.put(`/api/skills/${skillId}`, { name })).data;
+        dispatch(_updateSkill(skill));
+        dispatch(loadClients());
+        history.push('/');
+    }    
+}
+
 export const modifyClient = ({ addRemove, clientId, skillId }) => {
-    // console.log({addRemove, clientId, skillId});
     return async (dispatch) => {
         const result = await axios.put('/api/clientSkills/', { addRemove, clientId, skillId });
         
@@ -139,6 +155,10 @@ export const modifyClient = ({ addRemove, clientId, skillId }) => {
 
     }
 }
+
+const logger = createLogger({
+    collapsed: (getState, action, logEntry) => !logEntry.error
+  });
 
 const store = createStore(reducer, applyMiddleware(thunk, logger));
 

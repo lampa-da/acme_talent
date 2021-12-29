@@ -67,33 +67,15 @@ app.put('/api/clientSkills', async (req, res, next) => {
     }
 });
 
-app.get('/api/clientSkills', async (req, res, next) => {
+app.put('/api/skills/:id', async (req, res, next) => {
     try {
-        //
-    } catch(e) {
-        next(e);
-    }
-});
-
-app.put('/api/skills', async (req, res, next) => {
-    try {
-        //
-    } catch(e) {
-        next(e);
-    }
-});
-
-app.post('/api/clientSkills', async (req, res, next) => {
-    try {
-        //
-    } catch(e) {
-        next(e);
-    }
-});
-
-app.post('/api/clientSkills/:skill', async (req, res, next) => {
-    try {
-        //
+        const skill = await Skill.findByPk(req.params.id, {
+            include: Client
+        });
+        skill.update({
+            name: req.body.name
+        });
+        res.status(200).send(skill);
     } catch(e) {
         next(e);
     }
