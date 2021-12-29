@@ -34,12 +34,12 @@ app.get('/api/clients', async (req, res, next) => {
 
 app.put('/api/clientSkills', async (req, res, next) => {
     try {
-        if (req.body.action === 'add') {
-            const result = await ClientSkill.create({
+        if (req.body.addRemove === 'addSkill') {
+            await ClientSkill.create({
                 clientId: req.body.clientId,
                 skillId: req.body.skillId
             });
-        } else if (req.body.action === 'destroy') {
+        } else if (req.body.addRemove === 'removeSkill') {
             await ClientSkill.destroy({
                 where: {
                     [Op.and]: [{
@@ -51,13 +51,17 @@ app.put('/api/clientSkills', async (req, res, next) => {
                 }
             });
         }
+
         const client = await Client.findByPk(req.body.clientId, {
             include: Skill
         });
+        
         const skill = await Skill.findByPk(req.body.skillId, {
             include: Client
         });
-        res.status(200).send({client, skill});
+        
+        res.status(200).send({ client, skill });
+
     } catch (err) {
         next(err);
     }

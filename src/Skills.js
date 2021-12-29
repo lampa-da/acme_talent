@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 const Skills = (props) => {
+    console.log(props);
     const { skills } = props;
 
     return(
@@ -19,4 +21,4 @@ const Skills = (props) => {
     )
 }
 
-export default Skills;
+export default connect(state=>state)(Skills);
