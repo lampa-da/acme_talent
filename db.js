@@ -10,14 +10,12 @@ const Skill = db.define('skill', {
     name: TEXT
 });
 
+// "create" a model for the join table so it can be edited directly
 const ClientSkill = db.define('client-skills', {});
 
 //Creates the join table 'client-skill'
 Client.belongsToMany(Skill, { through: ClientSkill });
 Skill.belongsToMany(Client, { through: ClientSkill });
-
-// "create" a model for the join table so it can be edited directly
-
 
 const sync = async () => {
     await db.sync({force: true});
@@ -38,8 +36,11 @@ const sync = async () => {
     const skills = await Promise.all(skillNames.map(name => Skill.create({ name })));
 
     for(const user of users) {
-        user.addSkill( skills[ Math.floor(Math.random() * skills.length) ] );
-        // user.addSkill( skills[ Math.floor(Math.random() * skills.length) ] );
+        user.addSkill( skills[ Math.floor(Math.random() * skills.length) ], { ignoreDuplicates: true } );
+        Math.random() > 0.5 ? user.addSkill( skills[ Math.floor(Math.random() * skills.length) ], { ignoreDuplicates: true } ):null;
+        Math.random() > 0.5 ? user.addSkill( skills[ Math.floor(Math.random() * skills.length) ], { ignoreDuplicates: true } ):null;
+        Math.random() > 0.5 ? user.addSkill( skills[ Math.floor(Math.random() * skills.length) ], { ignoreDuplicates: true } ):null;
+        Math.random() > 0.5 ? user.addSkill( skills[ Math.floor(Math.random() * skills.length) ], { ignoreDuplicates: true } ):null;
     }
 }
 
