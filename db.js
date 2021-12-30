@@ -1,9 +1,16 @@
-const { Sequelize, TEXT, Op } = require('sequelize');
+const { Sequelize, JSON, Op, TEXT } = require('sequelize');
 const db = new Sequelize('postgres://localhost/talent');
 const faker = require('faker');
 
 const Client = db.define('client', {
-    name: TEXT
+    name: TEXT,
+    username: TEXT,
+    email: TEXT,
+    address: JSON,
+    phone: TEXT,
+    website: TEXT,
+    company: JSON,
+    image: TEXT
 });
 
 const Skill = db.define('skill', {
@@ -21,17 +28,23 @@ const sync = async () => {
     await db.sync({force: true});
 
     const users = [];
-    for (let i = 0; i < 5; i++) {
-        users.push(await Client.create({ name: faker.name.firstName() }));
+    for (let i = 0; i < 10; i++) {
+        const user = { address:{} };
+        user.firstName = faker.name.firstName();
+        user.lastName = faker.name.lastName();
+        user.name = `${user.firstName} ${user.lastName}`;
+        user.image = faker.image.imageUrl(320, 240, 'fashion, true');
+        user.email = faker.internet.email();
+        user.website = faker.internet.url();
+        user.phone = faker.phone.phoneNumber();
+        user.address.street = faker.address.streetAddress();
+        user.address.city = faker.address.cityName();
+        user.address.state = faker.address.stateAbbr();
+        user.address.zipcode = faker.address.zipCodeByState(user.address.state);
+
+        users.push(await Client.create(user));
     }
 
-    const andrew = await Client.create({name: 'Andrew'});
-    const react = await Skill.create({name: 'React'});
-    const javascript = await Skill.create({name: 'JavaScript'});
-
-    andrew.addSkill(react);
-    andrew.addSkill(javascript);
-    
     const skillNames = ['singing', 'dancing', 'acting', 'juggling', 'plate spinning', 'long division'];
     const skills = await Promise.all(skillNames.map(name => Skill.create({ name })));
 

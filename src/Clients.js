@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const Clients = (props) => {
-    const { clients, selectClient } = props;
+    const { clients } = props;
+    
     clients.sort((a ,b) => {
         if(a.name < b.name) return -1;
         if(b.name < a.name) return 1;
@@ -26,10 +27,4 @@ const Clients = (props) => {
     )
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        selectClient: (client) => dispatch(selectClient(client))
-    }
-}
-
-export default connect(state => state, mapDispatchToProps)(Clients);
+export default connect(state => state)(Clients);

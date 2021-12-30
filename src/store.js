@@ -2,6 +2,7 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import axios from 'axios';
 import { createLogger } from 'redux-logger';
+import faker from 'faker';
 
 const clientsReducer = (state = [], action) => {
     if(action.type === 'LOAD_CLIENTS') {
@@ -52,6 +53,7 @@ const reducer = combineReducers({
     clients: clientsReducer,
     skills: skillsReducer,
     client: clientReducer,
+    backgroundImage: (state = faker.image.abstract()) => state,
 });
 
 const _loadSkills = (skills) => {

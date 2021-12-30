@@ -3,6 +3,8 @@ import Clients from './Clients';
 import Skills from './Skills';
 import ClientProfile from './ClientProfile';
 import SkillProfile from './SkillProfile';
+import Nav from './Nav';
+import Home from './Home';
 
 import { connect } from 'react-redux';
 import { loadClients, loadSkills } from './store';
@@ -19,12 +21,13 @@ class App extends Component {
     render() {
         return(
             <Router>
-                <h1>Acme Talent Agency</h1>
                 <div id='app'>
+                    <Nav/>
                     <Switch>
+                        <Route path='/' component={ Home } exact/>
                         <Route path='/clients/:id' component={ ClientProfile }/>
                         <Route path='/skills/:id' component={ SkillProfile }/>
-                        <Route path='/'>
+                        <Route path='/clients/'>
                             <Clients/>
                             <Skills/>
                         </Route>
